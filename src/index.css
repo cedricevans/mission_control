@@ -1,0 +1,135 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LIGHT THEME (Default) */
+  --primary-bg: #F5F7FA;
+  --secondary-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --sidebar-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  
+  --text-primary: #111827;   /* Gray 900 */
+  --text-secondary: #6B7280; /* Gray 500 */
+  --text-inverse: #FFFFFF;
+  --text-muted: #9CA3AF;
+  
+  --border-color: #E5E7EB;   /* Gray 200 */
+  --border-highlight: #D1D5DB;
+  
+  --hover-bg: #F3F4F6;       /* Gray 100 */
+  
+  /* Accents - Adjusted for visibility on light bg */
+  --accent-gold: #D4AF37;
+  --accent-gold-dim: rgba(212, 175, 55, 0.1);
+  --accent-gold-glow: rgba(212, 175, 55, 0.2);
+  
+  --accent-blue: #0088AA;    /* Slightly darker for contrast on white */
+  --accent-blue-dim: rgba(0, 136, 170, 0.1);
+  --accent-blue-glow: rgba(0, 136, 170, 0.2);
+  
+  --accent-green: #059669;   /* Emerald 600 */
+  --accent-green-dim: rgba(5, 150, 105, 0.1);
+  
+  --accent-red: #DC2626;     /* Red 600 */
+  --accent-red-dim: rgba(220, 38, 38, 0.1);
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+[data-theme='dark'] {
+  /* DARK THEME */
+  --primary-bg: #0F1419;
+  --secondary-bg: #1A1F2E;
+  --card-bg: rgba(26, 31, 46, 0.6); /* Glassmorphism base */
+  --sidebar-bg: #151A23;
+  --input-bg: #1A1F2E;
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF; /* Gray 400 */
+  --text-inverse: #000000;
+  --text-muted: #6B7280;
+  
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(255, 255, 255, 0.15);
+  
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  
+  /* Accents */
+  --accent-gold: #D4AF37;
+  --accent-gold-dim: rgba(212, 175, 55, 0.15);
+  --accent-gold-glow: rgba(212, 175, 55, 0.4);
+  
+  --accent-blue: #00D9FF;
+  --accent-blue-dim: rgba(0, 217, 255, 0.15);
+  --accent-blue-glow: rgba(0, 217, 255, 0.4);
+  
+  --accent-green: #00FF41;
+  --accent-green-dim: rgba(0, 255, 65, 0.15);
+  
+  --accent-red: #FF3333;
+  --accent-red-dim: rgba(255, 51, 51, 0.15);
+  
+  --shadow-sm: none;
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism Utilities - Only active in Dark Mode via variable magic */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-highlight);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Typography */
+.font-display {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Transitions for Theme Switching */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}

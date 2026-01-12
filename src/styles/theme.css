@@ -1,0 +1,70 @@
+:root {
+  /* Common Transitions */
+  --transition-speed: 0.3s;
+  
+  /* Dark Theme (Default) */
+  --primary-bg: #0F1419;
+  --secondary-bg: #1A1F2E;
+  --card-bg: #1A1F2E;
+  --input-bg: #0F1419;
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-inverse: #000000;
+  
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  
+  /* Accents */
+  --accent-gold: #D4AF37;
+  --accent-blue: #00D9FF;
+  --accent-green: #00FF41;
+  --accent-red: #FF3333;
+  
+  /* Accent Backgrounds (dimmed) */
+  --accent-gold-dim: rgba(212, 175, 55, 0.1);
+  --accent-blue-dim: rgba(0, 217, 255, 0.1);
+  --accent-green-dim: rgba(0, 255, 65, 0.1);
+  --accent-red-dim: rgba(255, 51, 51, 0.1);
+  
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="light"] {
+  --primary-bg: #F3F4F6;
+  --secondary-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-inverse: #FFFFFF;
+  
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  
+  /* Adjusted Accents for Light Mode Contrast */
+  --accent-gold: #B4941F;
+  --accent-blue: #0090AA;
+  --accent-green: #00A82D;
+  --accent-red: #D91A1A;
+  
+  /* Accent Backgrounds (dimmed) */
+  --accent-gold-dim: rgba(180, 148, 31, 0.1);
+  --accent-blue-dim: rgba(0, 144, 170, 0.1);
+  --accent-green-dim: rgba(0, 168, 45, 0.1);
+  --accent-red-dim: rgba(217, 26, 26, 0.1);
+  
+  --shadow-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Apply transitions to all elements affected by theme */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: var(--transition-speed);
+  transition-timing-function: ease;
+}

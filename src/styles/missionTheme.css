@@ -1,0 +1,368 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;600;700;800;900&family=Audiowide&display=swap');
+
+:root {
+  /* Deep Space Blacks */
+  --space-deep: #0a0e27;
+  --space-dark: #1a1f3a;
+  --space-medium: #252b4a;
+  --space-light: #2d3454;
+  
+  /* Electric Blues */
+  --electric-cyan: #00d4ff;
+  --electric-blue: #0099ff;
+  --electric-blue-dark: #0066cc;
+  
+  /* Neon Accents */
+  --neon-pink: #ff006e;
+  --neon-red: #ff0055;
+  
+  /* Vibrant Oranges/Reds */
+  --mission-orange: #ff6b35;
+  --alert-red: #ff4500;
+  
+  /* Mission Status Colors */
+  --status-active: #00ff88;
+  --status-warning: #ffaa00;
+  --status-critical: #ff3366;
+  --status-nominal: #00d4ff;
+  
+  /* Glow Effects */
+  --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.6);
+  --glow-cyan-strong: 0 0 30px rgba(0, 212, 255, 0.9), 0 0 60px rgba(0, 212, 255, 0.5);
+  --glow-orange: 0 0 20px rgba(255, 107, 53, 0.6);
+  --glow-orange-strong: 0 0 30px rgba(255, 107, 53, 0.9), 0 0 60px rgba(255, 107, 53, 0.5);
+  --glow-pink: 0 0 20px rgba(255, 0, 110, 0.6);
+  --glow-green: 0 0 20px rgba(0, 255, 136, 0.6);
+}
+
+/* Atmospheric Gradients */
+.cosmic-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--space-deep) 0%,
+    var(--space-dark) 25%,
+    #1a2550 50%,
+    var(--space-dark) 75%,
+    var(--space-deep) 100%
+  );
+}
+
+.nebula-gradient {
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(0, 212, 255, 0.15) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at bottom right,
+    rgba(255, 107, 53, 0.15) 0%,
+    transparent 50%
+  ),
+  var(--space-deep);
+}
+
+.mission-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 255, 0.1) 0%,
+    transparent 50%,
+    rgba(255, 107, 53, 0.1) 100%
+  );
+}
+
+/* Neon Glowing Effects */
+.neon-border-cyan {
+  border: 1px solid var(--electric-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.neon-border-orange {
+  border: 1px solid var(--mission-orange);
+  box-shadow: var(--glow-orange);
+}
+
+.neon-text-cyan {
+  color: var(--electric-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.neon-text-orange {
+  color: var(--mission-orange);
+  text-shadow: var(--glow-orange);
+}
+
+.glow-cyan-strong {
+  box-shadow: var(--glow-cyan-strong);
+}
+
+.glow-orange-strong {
+  box-shadow: var(--glow-orange-strong);
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(26, 31, 58, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-strong {
+  background: rgba(26, 31, 58, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* Pulsing Animations */
+@keyframes pulse-cyan {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: var(--glow-cyan);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: var(--glow-cyan-strong);
+  }
+}
+
+@keyframes pulse-orange {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: var(--glow-orange);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: var(--glow-orange-strong);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+}
+
+.pulse-cyan {
+  animation: pulse-cyan 2s ease-in-out infinite;
+}
+
+.pulse-orange {
+  animation: pulse-orange 2s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Radar Scanning Animation */
+@keyframes radar-scan {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+.radar-scan {
+  animation: radar-scan 4s linear infinite;
+}
+
+.radar-pulse {
+  animation: radar-pulse 2s ease-in-out infinite;
+}
+
+/* Star Field Background */
+.starfield {
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 90% 60%, white, transparent),
+    radial-gradient(1px 1px at 33% 80%, white, transparent),
+    radial-gradient(1px 1px at 15% 60%, white, transparent);
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  animation: starfield-move 200s linear infinite;
+}
+
+@keyframes starfield-move {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Smooth Transitions */
+.transition-glow {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.transition-all-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Grid Pattern */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Typography */
+.font-mission {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-mono-mission {
+  font-family: 'Space Mono', monospace;
+}
+
+.font-tech {
+  font-family: 'Audiowide', cursive;
+}
+
+/* Hover Effects */
+.hover-glow-cyan:hover {
+  box-shadow: var(--glow-cyan-strong);
+  border-color: var(--electric-cyan);
+}
+
+.hover-glow-orange:hover {
+  box-shadow: var(--glow-orange-strong);
+  border-color: var(--mission-orange);
+}
+
+/* Slide In Animation */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.5s ease-out;
+}
+
+.slide-in-left {
+  animation: slide-in-left 0.5s ease-out;
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+/* Counter Animation */
+@keyframes counter-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.counter-animate {
+  animation: counter-up 0.6s ease-out;
+}
+
+/* Mission Status Indicator */
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-dot.active {
+  background: var(--status-active);
+  box-shadow: 0 0 15px var(--status-active);
+  animation: pulse-glow 1.5s infinite;
+}
+
+.status-dot.warning {
+  background: var(--status-warning);
+  box-shadow: 0 0 15px var(--status-warning);
+}
+
+.status-dot.critical {
+  background: var(--status-critical);
+  box-shadow: 0 0 15px var(--status-critical);
+  animation: pulse-glow 1s infinite;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--space-dark);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--electric-blue);
+  border-radius: 5px;
+  box-shadow: var(--glow-cyan);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--electric-cyan);
+  box-shadow: var(--glow-cyan-strong);
+}
