@@ -84,20 +84,16 @@ function PremiumHeader({
               </Tooltip>
           </TooltipProvider>
 
-          <button className="relative p-2 text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-colors group">
-            <Bell className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[var(--accent-red)] rounded-full border-2 border-[var(--primary-bg)] animate-pulse shadow-[0_0_8px_var(--accent-red-dim)]" />
-          </button>
-          
           <div className="flex items-center gap-3 pl-6 border-l border-[var(--border-color)]">
             <div className="text-right hidden lg:block">
               <div className="text-sm font-bold text-[var(--text-primary)]">Cedric Evans</div>
               <div className="text-[10px] text-[var(--accent-gold)] uppercase tracking-wider font-extrabold">Admin</div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--accent-gold)] to-[var(--accent-gold)] p-[2px] cursor-pointer hover:shadow-[0_0_15px_var(--accent-gold-dim)] transition-all">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--accent-gold)] to-[var(--accent-gold)] p-[2px] cursor-pointer hover:shadow-[0_0_15px_var(--accent-gold-dim)] transition-all">
               <div className="w-full h-full rounded-full bg-[var(--primary-bg)] flex items-center justify-center overflow-hidden">
                  <User className="w-5 h-5 text-[var(--text-primary)]" />
               </div>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[var(--accent-red)] rounded-full border-2 border-[var(--primary-bg)] animate-pulse shadow-[0_0_8px_var(--accent-red-dim)]" />
             </div>
           </div>
         </div>
