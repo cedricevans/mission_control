@@ -87,6 +87,15 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.theme-toggle-glow {
+  border-radius: 9999px;
+  box-shadow: none;
+}
+
+[data-theme='dark'] .logo-glow {
+  box-shadow: none;
+}
+
 /* Glassmorphism Utilities - Only active in Dark Mode via variable magic */
 .glass-panel {
   background: var(--card-bg);

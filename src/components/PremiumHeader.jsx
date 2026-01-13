@@ -64,7 +64,7 @@ function PremiumHeader({
           <TooltipProvider>
               <Tooltip>
                   <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" onClick={toggleTheme} className={`relative overflow-hidden transition-all duration-300 ${theme === 'dark' ? "text-[var(--accent-blue)] hover:bg-[var(--accent-blue)]/10 shadow-[0_0_10px_var(--accent-blue-glow)]" : "text-[var(--accent-gold)] hover:bg-[var(--accent-gold)]/10"}`} aria-label="Toggle Dark Mode">
+                      <Button variant="ghost" size="icon" onClick={toggleTheme} className={`theme-toggle-glow relative overflow-hidden transition-all duration-300 ${theme === 'dark' ? "text-[var(--accent-blue)] hover:bg-[var(--accent-blue)]/10" : "text-[var(--accent-gold)] hover:bg-[var(--accent-gold)]/10"}`} aria-label="Toggle Dark Mode">
                         <motion.div key={theme} initial={{
                   rotate: -180,
                   opacity: 0

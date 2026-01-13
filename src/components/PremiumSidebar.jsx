@@ -270,7 +270,7 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
       >
         <div className={cn("h-24 flex items-center border-b border-[var(--border-color)] shrink-0 transition-all duration-300", isOpen ? "px-6" : "justify-center px-0")}>
           <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-[60px] h-[60px] rounded-full bg-white/5 flex items-center justify-center shrink-0 shadow-[0_0_15px_var(--accent-gold-glow)] border border-[var(--border-color)] overflow-hidden">
+              <div className="logo-glow w-[60px] h-[60px] rounded-full bg-white/5 flex items-center justify-center shrink-0 shadow-[0_0_15px_var(--accent-gold-glow)] border border-[var(--border-color)] overflow-hidden">
                 <img 
                   src="https://horizons-cdn.hostinger.com/6bd44cbb-b6a3-4df8-8386-286a6aab56a2/2980587eb9031dc006aaa83edaa9d513.png" 
                   alt="FocusQuest Logo" 
