@@ -10,7 +10,6 @@ import {
 import PremiumCard from '@/components/PremiumCard';
 import LeadDistributionChart from '@/components/dashboard/LeadDistributionChart';
 import TopCampaignsChart from '@/components/dashboard/TopCampaignsChart';
-import DateFilterBar from '@/components/dashboard/DateFilterBar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -191,18 +190,12 @@ const GeneratedReportRow = ({ name, type, date, status }) => (
   </div>
 );
 
-export default function Dashboard() {
+export default function Dashboard({ filters }) {
   const [stats, setStats] = useState(null);
   const [funnelData, setFunnelData] = useState([]);
   const { toast } = useToast();
   
-  // Default filter state
-  const [currentFilters, setCurrentFilters] = useState({
-      startDate: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
-      filterStatus: 'active',
-      division: 'all'
-  });
+  const currentFilters = filters;
 
   // Analytics specific states
   const [analyticsDateRange, setAnalyticsDateRange] = useState('30days');
@@ -219,13 +212,10 @@ export default function Dashboard() {
   };
   
   useEffect(() => {
-    fetchData(currentFilters);
-  }, []);
-
-  const handleFilterSearch = (newFilters) => {
-      setCurrentFilters(newFilters);
-      fetchData(newFilters);
-  };
+    if (currentFilters) {
+      fetchData(currentFilters);
+    }
+  }, [currentFilters]);
 
   const handleGenerateReport = () => {
       toast({
@@ -303,10 +293,6 @@ export default function Dashboard() {
     // REMOVED PADDING from main container to ensure full-width filter bar
     <div className="min-h-screen pb-20 space-y-0 bg-[var(--primary-bg)]">
       <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        
-        {/* Date Filter Bar - Full Width, Sticky */}
-        <DateFilterBar onSearch={handleFilterSearch} initialFilters={currentFilters} />
-
         {/* Content Wrapper - Padded */}
         <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8">
 

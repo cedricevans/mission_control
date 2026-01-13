@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, GraduationCap, School, BookOpen, Layers, 
@@ -12,6 +12,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 function PremiumSidebar({ isOpen, toggleSidebar }) {
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState([]);
+  const menuScrollRef = useRef(null);
+
+  useEffect(() => {
+    const menuEl = menuScrollRef.current;
+    if (!menuEl) return;
+    const saved = sessionStorage.getItem('sidebar_menu_scroll');
+    if (saved) {
+      menuEl.scrollTop = Number.parseInt(saved, 10);
+    }
+  }, []);
+
+  useEffect(() => {
+    const menuEl = menuScrollRef.current;
+    if (!menuEl) return;
+
+    const handleScroll = () => {
+      sessionStorage.setItem('sidebar_menu_scroll', String(menuEl.scrollTop));
+    };
+
+    menuEl.addEventListener('scroll', handleScroll, { passive: true });
+    return () => menuEl.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const menuEl = menuScrollRef.current;
+    if (!menuEl) return;
+    const saved = sessionStorage.getItem('sidebar_menu_scroll');
+    if (saved) {
+      requestAnimationFrame(() => {
+        menuEl.scrollTop = Number.parseInt(saved, 10);
+      });
+    }
+  }, [location.pathname, isOpen]);
+
 
   const priorityItems = ['Dashboard', 'Student Mgmt.', 'School Mgmt.', 'Program Mgmt.', 'Campaign Mgmt.', 'Reports', 'Billing'];
 
@@ -158,6 +192,9 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
                    <NavLink
                       key={sub.path}
                       to={sub.path}
+                      onClick={() => {
+                        if (window.innerWidth < 640 && isOpen) toggleSidebar();
+                      }}
                       className={({ isActive }) => cn(
                          "flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors w-full",
                          isActive
@@ -184,6 +221,9 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
       <NavLink
         to={item.path}
         title={!isOpen ? item.label : undefined}
+        onClick={() => {
+          if (window.innerWidth < 640 && isOpen) toggleSidebar();
+        }}
         className={({ isActive }) => cn(
           "w-full flex items-center px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 group relative border border-transparent overflow-hidden mb-1",
           isActive 
@@ -213,7 +253,7 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
     <>
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 sm:hidden backdrop-blur-sm"
+          className="fixed inset-x-0 top-16 bottom-0 bg-black/50 z-50 sm:hidden backdrop-blur-sm"
           onClick={toggleSidebar}
         />
       )}
@@ -221,12 +261,11 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
       <motion.div 
         initial={false}
         animate={{ 
-          width: isOpen ? 280 : 80,
-          x: 0 
+          width: isOpen ? 280 : 72
         }}
         className={cn(
-          "fixed inset-y-0 left-0 sm:relative z-40 bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col shadow-2xl transition-all duration-300",
-          !isOpen && "w-[80px] -translate-x-full sm:translate-x-0"
+          "relative sm:relative z-[60] bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col shadow-2xl transition-all duration-300",
+          !isOpen && "w-[72px]"
         )}
       >
         <div className={cn("h-24 flex items-center border-b border-[var(--border-color)] shrink-0 transition-all duration-300", isOpen ? "px-6" : "justify-center px-0")}>
@@ -254,12 +293,12 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
 
         <button 
           onClick={toggleSidebar}
-          className="absolute -right-3 top-24 w-6 h-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-full flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)] transition-colors shadow-lg z-50 backdrop-blur-sm sm:flex hidden"
+          className="absolute -right-3 top-24 w-6 h-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-full flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)] transition-colors shadow-lg z-50 backdrop-blur-sm"
         >
           <Menu className="w-3 h-3" />
         </button>
 
-        <div className="flex-1 py-6 px-3 overflow-y-auto custom-scrollbar space-y-1 scroll-smooth">
+        <div ref={menuScrollRef} className="flex-1 py-6 px-3 overflow-y-auto custom-scrollbar space-y-1">
           {menuItems.map((item, idx) => <MenuItem key={idx} item={item} />)}
         </div>
 
