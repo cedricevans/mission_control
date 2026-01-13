@@ -295,6 +295,10 @@ export default function Dashboard({ filters }) {
       <motion.div variants={containerVariants} initial="hidden" animate="visible">
         {/* Content Wrapper - Padded */}
         <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8">
+            <div className="space-y-1">
+              <h1 className="text-2xl md:text-3xl font-bold font-display text-[var(--text-primary)]">Dashboard</h1>
+              <p className="text-sm text-[var(--text-secondary)]">Executive snapshot of lead flow, enrollment, and partner performance.</p>
+            </div>
 
             {/* SECTION 1: First KPI Cards Block */}
             <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
