@@ -37,14 +37,17 @@ function PremiumHeader({
           <Menu className="w-5 h-5" />
         </Button>
 
-          {/* Breadcrumb / Context */}
-          <div className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)]">
-            <Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">
-              <Home className="w-4 h-4" />
-            </Link>
-            <span>/</span>
-            <span className="text-[var(--text-primary)]">{getBreadcrumb()}</span>
-          </div>
+        {/* Breadcrumb / Context */}
+        <div className="hidden md:flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)]">
+          <Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">
+            <Home className="w-4 h-4" />
+          </Link>
+          <span>/</span>
+          <span className="text-[var(--text-primary)]">{getBreadcrumb()}</span>
+        </div>
+        <div className="md:hidden ml-4 text-[17.6px] font-bold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] via-[var(--accent-gold)] to-[var(--text-primary)]">
+          Morehouse College
+        </div>
         </div>
 
         {/* Right Side Actions */}

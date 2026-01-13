@@ -153,12 +153,14 @@ const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
         {/* Mobile Filter Button */}
         <div className="md:hidden">
           <div className="flex items-center justify-end">
-            <Button 
+            <button
+              type="button"
               onClick={() => setIsMobileModalOpen(true)}
-              className="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-blue)]/90 h-10 rounded-full px-5"
+              className="inline-flex items-center gap-2 text-[var(--accent-gold)] font-semibold hover:text-[#b8962e] transition-colors"
             >
+              <Filter className="w-4 h-4" />
               Filter Menu
-            </Button>
+            </button>
           </div>
         </div>
 
