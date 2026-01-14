@@ -216,7 +216,7 @@ const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
                             
                             {/* Presets */}
                             <div className="flex gap-1 mt-1">
-                                {['TODAY', 'WEEK', 'MONTH', 'YEAR'].map((preset) => (
+                                {['YEST', 'TODAY', 'WEEK', 'MONTH', 'YEAR'].map((preset) => (
                                 <button
                                     key={preset}
                                     onClick={() => handlePreset(preset)}
@@ -371,7 +371,7 @@ const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
                       />
                     </div>
                     <div className="grid grid-cols-4 gap-2">
-                      {['TODAY', 'WEEK', 'MONTH', 'YEAR'].map((preset) => (
+                      {['YEST', 'TODAY', 'WEEK', 'MONTH', 'YEAR'].map((preset) => (
                          <button
                             key={preset}
                             onClick={() => handlePreset(preset)}
