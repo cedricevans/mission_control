@@ -342,7 +342,7 @@ export default function Dashboard({ filters }) {
             <PremiumCard className="w-full py-10 px-6 md:px-12" glow>
                 <div className="flex items-center justify-between mb-12 border-b border-[var(--border-color)] pb-4">
                     <div>
-                        <h3 className="text-xl font-bold text-[var(--text-primary)] font-display">Student Pipeline Status</h3>
+                        <h3 className="text-xl font-bold text-[var(--text-primary)] font-display">Student Flow</h3>
                         <p className="text-xs text-[var(--text-secondary)] mt-1">Conversion funnel progression</p>
                     </div>
                     <span className="hidden md:inline-flex text-xs text-[var(--accent-blue)] bg-[var(--accent-blue)]/10 px-3 py-1 rounded-full font-bold border border-[var(--accent-blue)]/20">
@@ -379,10 +379,11 @@ export default function Dashboard({ filters }) {
                     {/* --- OVERVIEW TAB --- */}
                     <TabsContent value="overview" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* Summary Cards Row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                             <OverviewSummaryCard title="Total Revenue" value="$2.4M" trend="12.5" trendUp={true} period="last month" icon={CreditCard} />
                             <OverviewSummaryCard title="Total Students" value="1,847" trend="8.3" trendUp={true} period="last month" icon={GraduationCap} color="var(--accent-blue)" />
-                            <OverviewSummaryCard title="Active Campaigns" value="24" trend="5.2" trendUp={true} period="last month" icon={TrendingUp} color="var(--accent-green)" />
+                            <OverviewSummaryCard title="Total Enrollments" value={stats.enrolledCount} trend="5.9" trendUp={true} period="last month" icon={UserPlus} color="var(--accent-green)" />
+                            <OverviewSummaryCard title="ACTIVE PROGRAMS" value={PROGRAMS.length} trend="5.2" trendUp={true} period="last month" icon={Layers} color="var(--accent-gold)" />
                             <OverviewSummaryCard title="Conversion Rate" value="34.2%" trend="2.1" trendUp={true} period="last month" icon={Activity} color="#EF4444" />
                         </div>
 
@@ -401,7 +402,7 @@ export default function Dashboard({ filters }) {
                                 <PremiumCard className="p-6" glow>
                                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                                         <Users className="w-4 h-4 text-[var(--accent-blue)]" />
-                                        Enrollment Trend
+                                        Students Trend
                                     </h3>
                                     <div className="h-[200px]">
                                         <BarChartAdvanced data={programEnrollmentData.slice(0, 5)} height={200} showValues={false} />
@@ -501,20 +502,20 @@ export default function Dashboard({ filters }) {
                         {/* Charts Row */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <PremiumCard className="lg:col-span-2 p-6">
-                                <h3 className="text-lg font-bold mb-6">User Growth (12 Months)</h3>
+                                <h3 className="text-lg font-bold mb-6">Student Enrollment Growth</h3>
                                 <div className="h-[300px] w-full">
                                     <LineChartAdvanced data={userGrowthData} height={300} color="#00D9FF" />
                                 </div>
                             </PremiumCard>
                             <PremiumCard className="p-6 flex flex-col items-center">
-                                <h3 className="text-lg font-bold mb-6 w-full text-left">Student Status Distribution</h3>
+                                <h3 className="text-lg font-bold mb-6 w-full text-left">Student Distribution</h3>
                                 <PieChartAdvanced data={studentStatusData} size={220} />
                             </PremiumCard>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <PremiumCard className="p-6 lg:col-span-1">
-                                <h3 className="text-lg font-bold mb-6">Program Enrollment</h3>
+                                <h3 className="text-lg font-bold mb-6">Program Breakdown</h3>
                                 <div className="h-[250px]">
                                     <BarChartAdvanced data={programEnrollmentData} height={250} />
                                 </div>

@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Calendar, Lock, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SCHOOL_PARTNERS, CONTENT_PROVIDERS, PUBLISHERS } from '@/lib/storage';
+import { HBCU_SCHOOLS, CONTENT_PROVIDERS, PUBLISHERS } from '@/lib/storage';
 import PremiumCard from '@/components/PremiumCard';
 
 const FilterSection = ({ onSearch }) => {
@@ -131,14 +131,14 @@ const FilterSection = ({ onSearch }) => {
               </Select>
            </div>
            
-           {/* School Partner (Mock Multi) */}
+           {/* Schools (Mock Multi) */}
            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--accent-red)]">School Partner</label>
+              <label className="text-xs font-semibold text-[var(--accent-red)]">Schools</label>
               <Select value={filters.schoolPartner} onValueChange={(v) => setFilters(f => ({...f, schoolPartner: v}))}>
-                 <SelectTrigger className="rounded-xl"><SelectValue placeholder="All Partners" /></SelectTrigger>
+                 <SelectTrigger className="rounded-xl"><SelectValue placeholder="All Schools" /></SelectTrigger>
                  <SelectContent>
-                    <SelectItem value="all">All Partners</SelectItem>
-                    {SCHOOL_PARTNERS.slice(0, 5).map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                    <SelectItem value="all">All Schools</SelectItem>
+                    {HBCU_SCHOOLS.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
                  </SelectContent>
               </Select>
            </div>

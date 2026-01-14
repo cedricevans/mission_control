@@ -46,7 +46,7 @@ function PremiumHeader({
           <span className="text-[var(--text-primary)]">{getBreadcrumb()}</span>
         </div>
         <div className="md:hidden ml-4 text-[17.6px] font-bold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] via-[var(--accent-gold)] to-[var(--text-primary)]">
-          Morehouse College
+         FocusQuest Admin
         </div>
         </div>
 
@@ -54,7 +54,7 @@ function PremiumHeader({
         <div className="flex items-center gap-4 md:gap-6">
           
           {/* University Title - Moved from Dashboard body */}
-          <h1 className="hidden xl:block text-xl font-bold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] via-[var(--accent-gold)] to-[var(--text-primary)] mr-2 animate-in fade-in slide-in-from-top-2 duration-700">Morehouse College</h1>
+          <h1 className="hidden xl:block text-[22px] font-bold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] via-[var(--accent-gold)] to-[var(--text-primary)] mr-2 animate-in fade-in slide-in-from-top-2 duration-700">FocusQuest Admin</h1>
 
           <div className="hidden md:flex items-center w-64 relative group">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-secondary)] group-focus-within:text-[var(--accent-blue)] transition-colors" />

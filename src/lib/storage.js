@@ -7,8 +7,17 @@ export const LEAD_SOURCES = ['organic', 'paid', 'referral', 'direct', 'content_p
 export const VALIDITY_STATUSES = ['Gross', 'Valid', 'Invalid', 'Denied', 'Rejected', 'Returned', 'Accepted'];
 export const CONVERSION_STAGES = ['New Lead', 'Contacted', 'Interview', 'Application', 'Enrolled'];
 export const SCHOOL_PARTNERS = ['Howard University', 'Spelman College', 'Morehouse College', 'Hampton University', 'Tuskegee University', 'Florida A&M'];
+export const HBCU_SCHOOLS = [
+  'Alabama State University',
+  'Barber-Scotia College',
+  'Delaware State University',
+  'Pensole Lewis College',
+  'Southern University A&M',
+  'Southern University New Orleans',
+  'Southern University Shreveport'
+];
 export const PROGRAMS = ['Computer Science', 'Business Administration', 'Nursing', 'Engineering', 'Psychology', 'Education'];
-export const PUBLISHERS = ['CollegeConfidential', 'Niche', 'Scholarships.com', 'Fastweb'];
+export const PUBLISHERS = ['EduMatcher', 'MyDegree', 'My College Wellness', 'Zeta Global', 'What If Media Group'];
 export const CONTENT_PROVIDERS = ['The Grio', 'Blavity', 'HBCU Buzz', 'Diverse Education'];
 
 export const generateId = (prefix = 'id') => {
@@ -40,9 +49,9 @@ export const getDateRangeLeads = (leads, filters) => {
       if (!['Invalid', 'Rejected', 'Denied'].includes(l.validityStatus)) return false;
     }
     
-    // Advertiser/Content Provider
+    // Schools
     if (filters.advertiser && filters.advertiser.length > 0 && filters.advertiser !== 'all') {
-      if (!l.contentProvider || !filters.advertiser.includes(l.contentProvider)) return false;
+      if (!l.schoolPartner || !filters.advertiser.includes(l.schoolPartner)) return false;
     }
 
     // Publisher
@@ -297,11 +306,11 @@ export const getFunnelData = (filters = {}) => {
    const baseCount = leads.length;
    
    return [
-     { label: 'New Lead', value: baseCount, color: '#00D9FF' },
-     { label: 'Contacted', value: Math.floor(baseCount * 0.75), color: '#00C2E6' },
-     { label: 'Interview', value: Math.floor(baseCount * 0.50), color: '#00AACC' },
-     { label: 'Application', value: Math.floor(baseCount * 0.35), color: '#0093B3' },
-     { label: 'Enrolled', value: Math.floor(baseCount * 0.15), color: '#00FF41' }
+     { label: 'Leads In Progress', value: baseCount, color: '#00D9FF' },
+     { label: 'Applied', value: Math.floor(baseCount * 0.75), color: '#00C2E6' },
+     { label: 'Enrolled', value: Math.floor(baseCount * 0.50), color: '#00AACC' },
+     { label: 'Completed', value: Math.floor(baseCount * 0.35), color: '#0093B3' },
+     { label: 'Dropped', value: Math.floor(baseCount * 0.15), color: '#00FF41' }
    ];
 };
 

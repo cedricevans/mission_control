@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { CONTENT_PROVIDERS, PUBLISHERS } from '@/lib/storage';
+import { HBCU_SCHOOLS, PUBLISHERS } from '@/lib/storage';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
@@ -260,10 +260,10 @@ const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
                             </div>
 
                             <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-bold text-[var(--text-secondary)]">Advertiser</label>
+                                <label className="text-[10px] font-bold text-[var(--text-secondary)]">Schools</label>
                                 <MultiSelectMock 
-                                    placeholder="All" 
-                                    options={CONTENT_PROVIDERS} 
+                                    placeholder="All Schools" 
+                                    options={HBCU_SCHOOLS} 
                                     value={filters.advertiser}
                                     onChange={(v) => setFilters({...filters, advertiser: v})}
                                 />
@@ -428,8 +428,8 @@ const DateFilterBar = ({ onSearch, initialFilters = {}, embedded = false }) => {
                                   </Select>
                               </div>
                               <div className="space-y-1">
-                                  <label className="text-[10px] font-bold text-[var(--text-secondary)]">Advertiser</label>
-                                  <MultiSelectMock placeholder="All" options={CONTENT_PROVIDERS} value={filters.advertiser} onChange={(v) => setFilters({...filters, advertiser: v})} />
+                                  <label className="text-[10px] font-bold text-[var(--text-secondary)]">Schools</label>
+                                  <MultiSelectMock placeholder="All Schools" options={HBCU_SCHOOLS} value={filters.advertiser} onChange={(v) => setFilters({...filters, advertiser: v})} />
                               </div>
                               <div className="space-y-1">
                                   <label className="text-[10px] font-bold text-[var(--text-secondary)]">Publisher</label>

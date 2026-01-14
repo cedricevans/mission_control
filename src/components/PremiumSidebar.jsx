@@ -138,6 +138,7 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
     const isActive = location.pathname === item.path || (item.subItems && item.subItems.some(sub => location.pathname.startsWith(sub.path)));
     const Icon = item.icon;
     const isPriority = priorityItems.includes(item.label);
+    const isEmphasized = isPriority || item.id === 'source';
 
     if (hasSubItems) {
       return (
@@ -151,7 +152,7 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
                 ? "bg-[var(--accent-gold)]/10 text-[var(--accent-gold)]" 
                 : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]",
               isOpen ? "justify-between" : "justify-center",
-              isPriority && !isActive && "text-[var(--text-primary)]"
+              isEmphasized && !isActive && "text-[var(--text-primary)]"
             )}
             title={!isOpen ? item.label : undefined}
           >
@@ -164,7 +165,7 @@ function PremiumSidebar({ isOpen, toggleSidebar }) {
                  <Icon className={cn("w-5 h-5 transition-colors", isActive ? "text-[var(--accent-gold)]" : isPriority ? "text-[var(--accent-gold)]/80" : "text-current")} />
               </div>
               {isOpen && (
-                <span className={cn("transition-opacity duration-200 whitespace-nowrap", isPriority && "font-bold")}>
+                <span className={cn("transition-opacity duration-200 whitespace-nowrap", isEmphasized && "font-bold")}>
                   {item.label}
                 </span>
               )}
