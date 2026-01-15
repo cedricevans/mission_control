@@ -3,6 +3,7 @@ import React from 'react';
 import PremiumCard from '@/components/PremiumCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/components/ui/use-toast';
 
 const users = [
    { id: 1, name: 'Cedric Evans', email: 'cedric@focusquest.com', role: 'Admin', status: 'Active' },
@@ -11,11 +12,17 @@ const users = [
 ];
 
 function UserManagement() {
+  const { toast } = useToast();
+
+  const handleAction = (title, description) => {
+    toast({ title, description, duration: 2500 });
+  };
+
   return (
     <div className="space-y-6">
        <div className="flex justify-between items-center">
           <h1 className="text-3xl font-display font-bold">User Management</h1>
-          <Button>Add User</Button>
+          <Button onClick={() => handleAction('User Added', 'New user invitation sent.')}>Add User</Button>
        </div>
        
        <PremiumCard className="p-0 overflow-hidden">
@@ -37,7 +44,7 @@ function UserManagement() {
                       <td className="p-4"><Badge variant="outline">{u.role}</Badge></td>
                       <td className="p-4"><Badge variant={u.status === 'Active' ? 'default' : 'secondary'}>{u.status}</Badge></td>
                       <td className="p-4 text-right">
-                         <Button variant="link" size="sm">Edit</Button>
+                         <Button variant="link" size="sm" onClick={() => handleAction('User Updated', `${u.name} profile opened.`)}>Edit</Button>
                       </td>
                    </tr>
                 ))}

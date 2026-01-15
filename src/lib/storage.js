@@ -398,6 +398,184 @@ export const getLeadQualityTrendData = () => {
 
 // --- New Feature Demo Data ---
 
+export const getPublisherPerformance = () => {
+  const leads = getLeads();
+  const base = {};
+
+  PUBLISHERS.forEach((name) => {
+    base[name] = {
+      name,
+      leads: 0,
+      enrolled: 0,
+      qualityTotal: 0,
+      lastActive: null
+    };
+  });
+
+  leads.forEach((lead) => {
+    if (!lead.publisher) return;
+    if (!base[lead.publisher]) {
+      base[lead.publisher] = {
+        name: lead.publisher,
+        leads: 0,
+        enrolled: 0,
+        qualityTotal: 0,
+        lastActive: null
+      };
+    }
+
+    base[lead.publisher].leads += 1;
+    base[lead.publisher].qualityTotal += lead.qualityScore || 0;
+    if (lead.conversionStage === 'Enrolled') {
+      base[lead.publisher].enrolled += 1;
+    }
+    if (lead.createdAt) {
+      const createdAt = new Date(lead.createdAt);
+      const lastActive = base[lead.publisher].lastActive ? new Date(base[lead.publisher].lastActive) : null;
+      if (!lastActive || createdAt > lastActive) {
+        base[lead.publisher].lastActive = lead.createdAt;
+      }
+    }
+  });
+
+  return Object.values(base).map((publisher) => {
+    const avgQuality = publisher.leads > 0 ? Math.round(publisher.qualityTotal / publisher.leads) : 0;
+    const conversionRate = publisher.leads > 0 ? (publisher.enrolled / publisher.leads) * 100 : 0;
+
+    return {
+      ...publisher,
+      avgQuality,
+      conversionRate,
+      revenue: publisher.enrolled * 2500,
+      status: publisher.leads >= 20 ? 'Active' : 'Monitoring',
+      lastActiveLabel: publisher.lastActive ? publisher.lastActive.split('T')[0] : 'N/A'
+    };
+  }).sort((a, b) => b.leads - a.leads);
+};
+
+export const getContentProviderPerformance = () => {
+  const leads = getLeads();
+  const base = {};
+
+  CONTENT_PROVIDERS.forEach((name) => {
+    base[name] = {
+      name,
+      leads: 0,
+      enrolled: 0,
+      qualityTotal: 0,
+      lastActive: null
+    };
+  });
+
+  leads.forEach((lead) => {
+    if (!lead.contentProvider) return;
+    if (!base[lead.contentProvider]) {
+      base[lead.contentProvider] = {
+        name: lead.contentProvider,
+        leads: 0,
+        enrolled: 0,
+        qualityTotal: 0,
+        lastActive: null
+      };
+    }
+
+    base[lead.contentProvider].leads += 1;
+    base[lead.contentProvider].qualityTotal += lead.qualityScore || 0;
+    if (lead.conversionStage === 'Enrolled') {
+      base[lead.contentProvider].enrolled += 1;
+    }
+    if (lead.createdAt) {
+      const createdAt = new Date(lead.createdAt);
+      const lastActive = base[lead.contentProvider].lastActive ? new Date(base[lead.contentProvider].lastActive) : null;
+      if (!lastActive || createdAt > lastActive) {
+        base[lead.contentProvider].lastActive = lead.createdAt;
+      }
+    }
+  });
+
+  return Object.values(base).map((provider) => {
+    const avgQuality = provider.leads > 0 ? Math.round(provider.qualityTotal / provider.leads) : 0;
+    const conversionRate = provider.leads > 0 ? (provider.enrolled / provider.leads) * 100 : 0;
+
+    return {
+      ...provider,
+      avgQuality,
+      conversionRate,
+      revenue: provider.enrolled * 2400,
+      status: provider.leads >= 15 ? 'Active' : 'Monitoring',
+      lastActiveLabel: provider.lastActive ? provider.lastActive.split('T')[0] : 'N/A'
+    };
+  }).sort((a, b) => b.leads - a.leads);
+};
+
+export const getPublisherInvoices = () => {
+  return [
+    { id: 'PUB-INV-2201', partner: 'EduMatcher', amount: 5400, dueDate: '2024-02-18', status: 'Approved', terms: 'Net 15' },
+    { id: 'PUB-INV-2202', partner: 'MyDegree', amount: 3200, dueDate: '2024-02-22', status: 'Pending', terms: 'Net 30' },
+    { id: 'PUB-INV-2203', partner: 'Zeta Global', amount: 8700, dueDate: '2024-02-27', status: 'Disputed', terms: 'Net 30' },
+    { id: 'PUB-INV-2204', partner: 'What If Media Group', amount: 4100, dueDate: '2024-03-05', status: 'Approved', terms: 'Net 15' }
+  ];
+};
+
+export const getProviderInvoices = () => {
+  return [
+    { id: 'CP-INV-1108', partner: 'The Grio', amount: 6800, dueDate: '2024-02-20', status: 'Approved', terms: 'Net 30' },
+    { id: 'CP-INV-1109', partner: 'Blavity', amount: 4200, dueDate: '2024-02-25', status: 'Pending', terms: 'Net 15' },
+    { id: 'CP-INV-1110', partner: 'HBCU Buzz', amount: 5100, dueDate: '2024-03-01', status: 'Approved', terms: 'Net 30' },
+    { id: 'CP-INV-1111', partner: 'Diverse Education', amount: 2900, dueDate: '2024-03-08', status: 'Overdue', terms: 'Net 15' }
+  ];
+};
+
+export const getEmailTemplates = () => {
+  return [
+    {
+      id: 'tmpl-001',
+      name: 'New Lead Welcome',
+      subject: 'Welcome to HBCU Connect!',
+      type: 'Onboarding',
+      status: 'Active',
+      lastUpdated: '2024-01-12',
+      opens: 68
+    },
+    {
+      id: 'tmpl-002',
+      name: 'Application Follow-up',
+      subject: 'Complete Your Application',
+      type: 'Nurture',
+      status: 'Active',
+      lastUpdated: '2024-01-28',
+      opens: 54
+    },
+    {
+      id: 'tmpl-003',
+      name: 'Scholarship Reminder',
+      subject: 'Scholarship Deadline Approaching',
+      type: 'Retention',
+      status: 'Draft',
+      lastUpdated: '2024-02-03',
+      opens: 0
+    },
+    {
+      id: 'tmpl-004',
+      name: 'Enrollment Confirmation',
+      subject: 'You are officially enrolled!',
+      type: 'Transactional',
+      status: 'Active',
+      lastUpdated: '2024-02-08',
+      opens: 72
+    }
+  ];
+};
+
+export const getContentLibrary = () => {
+  return [
+    { id: 'cnt-001', title: 'HBCU Scholarship Guide', type: 'Article', owner: 'Content Team', status: 'Published', updatedAt: '2024-02-02', leads: 186 },
+    { id: 'cnt-002', title: 'Campus Life Virtual Tour', type: 'Video', owner: 'Media Lab', status: 'Published', updatedAt: '2024-01-25', leads: 142 },
+    { id: 'cnt-003', title: 'STEM Program Spotlight', type: 'Landing Page', owner: 'Growth', status: 'Draft', updatedAt: '2024-02-07', leads: 58 },
+    { id: 'cnt-004', title: 'Admissions Checklist', type: 'PDF', owner: 'Admissions', status: 'Published', updatedAt: '2024-01-30', leads: 204 }
+  ];
+};
+
 export const getPaymentHistory = () => {
     return [
         { id: 'TXN-001', date: '2024-01-05', amount: 5000, status: 'Completed', method: 'Credit Card' },

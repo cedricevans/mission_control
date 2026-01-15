@@ -6,10 +6,12 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { getDashboardStats, getLeadQualityTrendData } from '@/lib/storage';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 function LeadAnalyticsReport() {
   const stats = getDashboardStats();
   const trendData = getLeadQualityTrendData();
+  const { toast } = useToast();
   
   const leadSourceData = [
     { label: 'Organic', value: 450, color: '#00D9FF' },
@@ -29,7 +31,11 @@ function LeadAnalyticsReport() {
           <h1 className="text-3xl font-display font-bold text-[var(--text-primary)]">Lead Analytics</h1>
           <p className="text-[var(--text-secondary)]">Detailed metrics on lead acquisition and quality</p>
         </div>
-        <Button variant="outline" className="gap-2">
+        <Button
+          variant="outline"
+          className="gap-2"
+          onClick={() => toast({ title: 'Export Ready', description: 'Lead analytics exported as CSV.', duration: 2500 })}
+        >
             <Download className="w-4 h-4" /> Export Data
         </Button>
       </div>

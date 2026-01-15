@@ -4,6 +4,7 @@ import PremiumCard from '@/components/PremiumCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 const invoices = [
    { id: 'INV-2024-001', school: 'Howard University', amount: 12500, date: '2024-01-15', status: 'Paid' },
@@ -12,6 +13,12 @@ const invoices = [
 ];
 
 function SchoolInvoice() {
+  const { toast } = useToast();
+
+  const handleAction = (title, description) => {
+    toast({ title, description, duration: 2500 });
+  };
+
   return (
     <div className="space-y-6">
        <h1 className="text-3xl font-display font-bold">School Invoices</h1>
@@ -41,8 +48,12 @@ function SchoolInvoice() {
                          }>{inv.status}</Badge>
                       </td>
                       <td className="p-4 text-right">
-                         <Button variant="ghost" size="icon"><Eye className="w-4 h-4" /></Button>
-                         <Button variant="ghost" size="icon"><Download className="w-4 h-4" /></Button>
+                         <Button variant="ghost" size="icon" onClick={() => handleAction('Invoice Opened', `${inv.id} opened for review.`)}>
+                           <Eye className="w-4 h-4" />
+                         </Button>
+                         <Button variant="ghost" size="icon" onClick={() => handleAction('Download Ready', `${inv.id} downloaded.`)}>
+                           <Download className="w-4 h-4" />
+                         </Button>
                       </td>
                    </tr>
                 ))}

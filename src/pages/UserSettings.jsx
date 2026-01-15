@@ -4,8 +4,11 @@ import PremiumCard from '@/components/PremiumCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/components/ui/use-toast';
 
 function UserSettings() {
+  const { toast } = useToast();
+
   return (
     <div className="space-y-6">
        <h1 className="text-3xl font-display font-bold">My Profile</h1>
@@ -28,7 +31,9 @@ function UserSettings() {
              </div>
              
              <div className="pt-4 border-t border-[var(--border-color)]">
-                <Button>Save Changes</Button>
+                <Button onClick={() => toast({ title: 'Profile Saved', description: 'Your profile updates are live.', duration: 2500 })}>
+                  Save Changes
+                </Button>
              </div>
           </div>
        </PremiumCard>
