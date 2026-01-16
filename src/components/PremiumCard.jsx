@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/context/ThemeContext';
 
-function PremiumCard({ children, className, glow = false, delay = 0, onClick }) {
+function PremiumCard({ children, className, glow = false, delay = 0, onClick, ...props }) {
   const { theme } = useTheme();
 
   return (
@@ -23,6 +23,7 @@ function PremiumCard({ children, className, glow = false, delay = 0, onClick }) 
         className
       )}
       onClick={onClick}
+      {...props}
     >
       {/* Subtle Gradient Overlay only visible in Dark Mode usually, but kept for texture */}
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--secondary-bg)]/5 to-transparent pointer-events-none" />

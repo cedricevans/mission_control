@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, GraduationCap, School, Layers, FileBox, 
@@ -43,8 +43,19 @@ const itemVariants = {
 };
 
 // --- KPI Components ---
-const KPICard1 = ({ title, value, icon: Icon, trend, trendUp = true, showFilter = false }) => (
-  <PremiumCard className="flex flex-col justify-between min-h-[140px] hover:translate-y-[-4px] transition-transform duration-300 relative overflow-visible" glow>
+const KPICard1 = ({ title, value, icon: Icon, trend, trendUp = true, showFilter = false, onClick }) => (
+  <PremiumCard
+    className="flex flex-col justify-between min-h-[140px] hover:translate-y-[-4px] transition-transform duration-300 relative overflow-visible cursor-pointer"
+    glow
+    role="button"
+    tabIndex={0}
+    onClick={onClick}
+    onKeyDown={(event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        onClick?.();
+      }
+    }}
+  >
     <div className="flex justify-between items-start mb-4">
       <div className="p-3 rounded-xl bg-[var(--secondary-bg)] border border-[var(--border-color)] group-hover:border-[var(--accent-gold)]/30 transition-colors shadow-sm">
         <Icon className="w-5 h-5 text-[var(--accent-gold)]" />
@@ -67,8 +78,20 @@ const KPICard1 = ({ title, value, icon: Icon, trend, trendUp = true, showFilter 
   </PremiumCard>
 );
 
-const KPICard2 = ({ title, value, color, icon: Icon }) => (
-    <PremiumCard className="flex flex-col items-center justify-center text-center p-6 hover:scale-105 transition-transform duration-300 border-t-4" style={{ borderTopColor: color }} glow>
+const KPICard2 = ({ title, value, color, icon: Icon, onClick }) => (
+    <PremiumCard
+      className="flex flex-col items-center justify-center text-center p-6 hover:scale-105 transition-transform duration-300 border-t-4 cursor-pointer"
+      style={{ borderTopColor: color }}
+      glow
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          onClick?.();
+        }
+      }}
+    >
         <div className="mb-3 p-3 rounded-full bg-[var(--secondary-bg)] shadow-inner">
              <Icon className="w-6 h-6" style={{ color }} />
         </div>
@@ -122,8 +145,19 @@ const SectionDivider = () => (
 
 // --- New Components for Tabs ---
 
-const OverviewSummaryCard = ({ title, value, trend, trendUp, period, icon: Icon, color = "var(--accent-gold)" }) => (
-  <PremiumCard className="flex flex-col gap-4" glow>
+const OverviewSummaryCard = ({ title, value, trend, trendUp, period, icon: Icon, color = "var(--accent-gold)", onClick }) => (
+  <PremiumCard
+    className="flex flex-col gap-4 cursor-pointer"
+    glow
+    role="button"
+    tabIndex={0}
+    onClick={onClick}
+    onKeyDown={(event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        onClick?.();
+      }
+    }}
+  >
     <div className="flex justify-between items-start">
       <div className="p-2 rounded-lg bg-[var(--secondary-bg)]/50">
          <Icon className="w-5 h-5" style={{ color }} />
@@ -141,8 +175,18 @@ const OverviewSummaryCard = ({ title, value, trend, trendUp, period, icon: Icon,
   </PremiumCard>
 );
 
-const RecentActivityItem = ({ title, time, type }) => (
-  <div className="flex gap-4 p-4 border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--secondary-bg)]/20 transition-colors">
+const RecentActivityItem = ({ title, time, type, isActive = false, onClick }) => (
+  <div
+    className={`flex gap-4 p-4 border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--secondary-bg)]/20 transition-colors cursor-pointer ${isActive ? 'bg-[var(--secondary-bg)]/30' : ''}`}
+    role="button"
+    tabIndex={0}
+    onClick={onClick}
+    onKeyDown={(event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        onClick?.();
+      }
+    }}
+  >
      <div className={`mt-1 p-2 rounded-full h-fit shrink-0 ${
         type === 'enrollment' ? 'bg-green-500/10 text-green-500' : 
         type === 'campaign' ? 'bg-blue-500/10 text-blue-500' : 'bg-orange-500/10 text-orange-500'
@@ -159,8 +203,18 @@ const RecentActivityItem = ({ title, time, type }) => (
   </div>
 );
 
-const GeneratedReportRow = ({ name, type, date, status }) => (
-  <div className="flex items-center justify-between p-4 border border-[var(--border-color)] rounded-xl bg-[var(--secondary-bg)]/10 hover:border-[var(--accent-gold)]/30 transition-all">
+const GeneratedReportRow = ({ name, type, date, status, onClick }) => (
+  <div
+    className="flex items-center justify-between p-4 border border-[var(--border-color)] rounded-xl bg-[var(--secondary-bg)]/10 hover:border-[var(--accent-gold)]/30 transition-all cursor-pointer"
+    role="button"
+    tabIndex={0}
+    onClick={onClick}
+    onKeyDown={(event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        onClick?.();
+      }
+    }}
+  >
     <div className="flex items-center gap-4">
         <div className="p-2 bg-[var(--secondary-bg)] rounded-lg text-[var(--accent-blue)]">
             <FileText className="w-5 h-5" />
@@ -194,6 +248,9 @@ export default function Dashboard({ filters }) {
   const [stats, setStats] = useState(null);
   const [funnelData, setFunnelData] = useState([]);
   const { toast } = useToast();
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [analyticsSort, setAnalyticsSort] = useState({ key: 'enrolled', direction: 'desc' });
+  const [scheduleSort, setScheduleSort] = useState({ key: 'nextRun', direction: 'asc' });
   
   const currentFilters = filters;
 
@@ -233,8 +290,6 @@ export default function Dashboard({ filters }) {
           duration: 3000,
       });
   };
-
-  if (!stats) return null;
 
   // Mock Data for new tabs
   const userGrowthData = [
@@ -289,6 +344,64 @@ export default function Dashboard({ filters }) {
       { name: "Monthly Revenue Summary", type: "Financial", date: "Dec 31, 2025", status: "Completed" }
   ];
 
+  const scheduleRows = [
+    { name: 'Weekly Financial Summary', frequency: 'Weekly (Mon)', nextRun: 'Jan 16, 2026', status: 'Active' },
+    { name: 'Monthly Enrollment Report', frequency: 'Monthly (1st)', nextRun: 'Feb 01, 2026', status: 'Active' }
+  ];
+
+  const handleInsightClick = (title, description) => {
+    toast({ title, description, duration: 2200 });
+  };
+
+  const sortedAnalyticsTableData = useMemo(() => {
+    const sorted = [...analyticsTableData];
+    sorted.sort((a, b) => {
+      const { key, direction } = analyticsSort;
+      const multiplier = direction === 'asc' ? 1 : -1;
+      const valueA = key === 'rate' ? parseFloat(a[key]) : a[key];
+      const valueB = key === 'rate' ? parseFloat(b[key]) : b[key];
+
+      if (typeof valueA === 'string') {
+        return valueA.localeCompare(valueB) * multiplier;
+      }
+      return (valueA - valueB) * multiplier;
+    });
+    return sorted;
+  }, [analyticsTableData, analyticsSort]);
+
+  const sortedScheduleRows = useMemo(() => {
+    const sorted = [...scheduleRows];
+    sorted.sort((a, b) => {
+      const { key, direction } = scheduleSort;
+      const multiplier = direction === 'asc' ? 1 : -1;
+      if (key === 'nextRun') {
+        return (new Date(a[key]) - new Date(b[key])) * multiplier;
+      }
+      return a[key].localeCompare(b[key]) * multiplier;
+    });
+    return sorted;
+  }, [scheduleRows, scheduleSort]);
+
+  const toggleSort = (key, sortStateSetter) => {
+    sortStateSetter((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'desc' };
+    });
+  };
+
+  const sortIconFor = (key, sortState) => {
+    if (sortState.key !== key) return null;
+    return sortState.direction === 'asc' ? (
+      <ArrowUp className="w-3 h-3 inline-block ml-1" />
+    ) : (
+      <ArrowDown className="w-3 h-3 inline-block ml-1" />
+    );
+  };
+
+  if (!stats) return null;
+
   return (
     // REMOVED PADDING from main container to ensure full-width filter bar
     <div className="min-h-screen pb-20 space-y-0 bg-[var(--primary-bg)]">
@@ -302,11 +415,11 @@ export default function Dashboard({ filters }) {
 
             {/* SECTION 1: First KPI Cards Block */}
             <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <KPICard1 title="Total Leads" value={stats.totalLeads} icon={Users} trend={12} showFilter />
-            <KPICard1 title="Enrolled Students" value={stats.enrolledCount} icon={GraduationCap} trend={8} showFilter />
-            <KPICard1 title="Active Schools" value={SCHOOL_PARTNERS.length} icon={School} trend={5} />
-            <KPICard1 title="Publishers" value={PUBLISHERS.length} icon={Layers} trend={2} />
-            <KPICard1 title="Content Providers" value={CONTENT_PROVIDERS.length} icon={FileBox} trend={4} />
+            <KPICard1 title="Total Leads" value={stats.totalLeads} icon={Users} trend={12} showFilter onClick={() => handleInsightClick('Total Leads', 'Applied lead filters to highlight top sources.')} />
+            <KPICard1 title="Enrolled Students" value={stats.enrolledCount} icon={GraduationCap} trend={8} showFilter onClick={() => handleInsightClick('Enrollment Snapshot', 'Opened enrollment detail view.')} />
+            <KPICard1 title="Active Schools" value={SCHOOL_PARTNERS.length} icon={School} trend={5} onClick={() => handleInsightClick('Active Schools', 'Showing partner performance breakdown.')} />
+            <KPICard1 title="Publishers" value={PUBLISHERS.length} icon={Layers} trend={2} onClick={() => handleInsightClick('Publishers', 'Publisher leaderboard refreshed.')} />
+            <KPICard1 title="Content Providers" value={CONTENT_PROVIDERS.length} icon={FileBox} trend={4} onClick={() => handleInsightClick('Content Providers', 'Opened provider pipeline insights.')} />
             </motion.div>
 
             <SectionDivider />
@@ -314,10 +427,14 @@ export default function Dashboard({ filters }) {
             {/* SECTION 2: Graphs Section */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             <motion.div variants={itemVariants} className="lg:col-span-2 h-full min-h-[400px]">
-                <LeadDistributionChart filters={currentFilters} />
+                <div onClick={() => handleInsightClick('Lead Distribution', 'Chart drilled into top sources.')} className="h-full cursor-pointer">
+                  <LeadDistributionChart filters={currentFilters} />
+                </div>
             </motion.div>
             <motion.div variants={itemVariants} className="lg:col-span-3 h-full min-h-[400px]">
-                <TopCampaignsChart filters={currentFilters} />
+                <div onClick={() => handleInsightClick('Top Campaigns', 'Opened campaign detail view.')} className="h-full cursor-pointer">
+                  <TopCampaignsChart filters={currentFilters} />
+                </div>
             </motion.div>
             </div>
 
@@ -327,11 +444,11 @@ export default function Dashboard({ filters }) {
             <motion.div variants={itemVariants}>
                 <h3 className="text-lg font-bold text-[var(--text-primary)] font-display mb-6 px-1">Lead Quality Breakdown</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <KPICard2 title="Gross Leads" value={stats.totalLeads} icon={Layers} color="#64748b" />
-                    <KPICard2 title="Invalid" value={stats.statusCounts['Invalid'] || 0} icon={AlertCircle} color="#ef4444" />
-                    <KPICard2 title="Rejected" value={stats.statusCounts['Rejected'] || 0} icon={Ban} color="#f59e0b" />
-                    <KPICard2 title="Returned" value={stats.statusCounts['Returned'] || 0} icon={RotateCcw} color="#8b5cf6" />
-                    <KPICard2 title="Valid Leads" value={(stats.statusCounts['Valid'] || 0) + (stats.statusCounts['Accepted'] || 0)} icon={CheckCircle} color="#10b981" />
+                    <KPICard2 title="Gross Leads" value={stats.totalLeads} icon={Layers} color="#64748b" onClick={() => handleInsightClick('Gross Leads', 'Pulled raw lead list.')} />
+                    <KPICard2 title="Invalid" value={stats.statusCounts['Invalid'] || 0} icon={AlertCircle} color="#ef4444" onClick={() => handleInsightClick('Invalid Leads', 'Opened invalid lead review queue.')} />
+                    <KPICard2 title="Rejected" value={stats.statusCounts['Rejected'] || 0} icon={Ban} color="#f59e0b" onClick={() => handleInsightClick('Rejected Leads', 'Opened rejection audit panel.')} />
+                    <KPICard2 title="Returned" value={stats.statusCounts['Returned'] || 0} icon={RotateCcw} color="#8b5cf6" onClick={() => handleInsightClick('Returned Leads', 'Opened resubmission tracker.')} />
+                    <KPICard2 title="Valid Leads" value={(stats.statusCounts['Valid'] || 0) + (stats.statusCounts['Accepted'] || 0)} icon={CheckCircle} color="#10b981" onClick={() => handleInsightClick('Valid Leads', 'Showing quality distribution.')} />
                 </div>
             </motion.div>
 
@@ -380,17 +497,17 @@ export default function Dashboard({ filters }) {
                     <TabsContent value="overview" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* Summary Cards Row */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                            <OverviewSummaryCard title="Total Revenue" value="$2.4M" trend="12.5" trendUp={true} period="last month" icon={CreditCard} />
-                            <OverviewSummaryCard title="Total Students" value="1,847" trend="8.3" trendUp={true} period="last month" icon={GraduationCap} color="var(--accent-blue)" />
-                            <OverviewSummaryCard title="Total Enrollments" value={stats.enrolledCount} trend="5.9" trendUp={true} period="last month" icon={UserPlus} color="var(--accent-green)" />
-                            <OverviewSummaryCard title="ACTIVE PROGRAMS" value={PROGRAMS.length} trend="5.2" trendUp={true} period="last month" icon={Layers} color="var(--accent-gold)" />
-                            <OverviewSummaryCard title="Conversion Rate" value="34.2%" trend="2.1" trendUp={true} period="last month" icon={Activity} color="#EF4444" />
+                            <OverviewSummaryCard title="Total Revenue" value="$2.4M" trend="12.5" trendUp={true} period="last month" icon={CreditCard} onClick={() => handleInsightClick('Revenue Overview', 'Opened revenue drill-down.')} />
+                            <OverviewSummaryCard title="Total Students" value="1,847" trend="8.3" trendUp={true} period="last month" icon={GraduationCap} color="var(--accent-blue)" onClick={() => handleInsightClick('Student Growth', 'Opened student growth analysis.')} />
+                            <OverviewSummaryCard title="Total Enrollments" value={stats.enrolledCount} trend="5.9" trendUp={true} period="last month" icon={UserPlus} color="var(--accent-green)" onClick={() => handleInsightClick('Enrollment Trends', 'Opened enrollment trends.')} />
+                            <OverviewSummaryCard title="ACTIVE PROGRAMS" value={PROGRAMS.length} trend="5.2" trendUp={true} period="last month" icon={Layers} color="var(--accent-gold)" onClick={() => handleInsightClick('Program Coverage', 'Opened program performance.')} />
+                            <OverviewSummaryCard title="Conversion Rate" value="34.2%" trend="2.1" trendUp={true} period="last month" icon={Activity} color="#EF4444" onClick={() => handleInsightClick('Conversion Rate', 'Opened conversion optimization insights.')} />
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             {/* Quick Stats & Mini Charts */}
                             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <PremiumCard className="p-6" glow>
+                                <PremiumCard className="p-6 cursor-pointer" glow onClick={() => handleInsightClick('Revenue Trend', 'Zoomed into the last 30 days.')}>
                                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                                         <TrendingUp className="w-4 h-4 text-[var(--accent-gold)]" />
                                         Revenue Trend (30 Days)
@@ -399,7 +516,7 @@ export default function Dashboard({ filters }) {
                                         <LineChartAdvanced data={userGrowthData.slice(-6)} height={200} color="#D4AF37" />
                                     </div>
                                 </PremiumCard>
-                                <PremiumCard className="p-6" glow>
+                                <PremiumCard className="p-6 cursor-pointer" glow onClick={() => handleInsightClick('Students Trend', 'Opened student cohort view.')}>
                                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                                         <Users className="w-4 h-4 text-[var(--accent-blue)]" />
                                         Students Trend
@@ -413,19 +530,19 @@ export default function Dashboard({ filters }) {
                                 <PremiumCard className="col-span-1 md:col-span-2 p-6">
                                     <h3 className="text-lg font-bold mb-4">Quick Stats</h3>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center">
+                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center cursor-pointer" role="button" tabIndex={0} onClick={() => handleInsightClick('Leads This Month', 'Opened lead volume trend.')} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') handleInsightClick('Leads This Month', 'Opened lead volume trend.'); }}>
                                             <div className="text-2xl font-bold text-[var(--text-primary)]">3,421</div>
                                             <div className="text-xs text-[var(--text-secondary)] uppercase mt-1">Leads This Month</div>
                                         </div>
-                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center">
+                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center cursor-pointer" role="button" tabIndex={0} onClick={() => handleInsightClick('Enrolled Students', 'Opened enrolled student roster.')} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') handleInsightClick('Enrolled Students', 'Opened enrolled student roster.'); }}>
                                             <div className="text-2xl font-bold text-[var(--text-primary)]">156</div>
                                             <div className="text-xs text-[var(--text-secondary)] uppercase mt-1">Enrolled Students</div>
                                         </div>
-                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center">
+                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center cursor-pointer" role="button" tabIndex={0} onClick={() => handleInsightClick('Avg Lead Value', 'Opened revenue per lead breakdown.')} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') handleInsightClick('Avg Lead Value', 'Opened revenue per lead breakdown.'); }}>
                                             <div className="text-2xl font-bold text-[var(--text-primary)]">$1,240</div>
                                             <div className="text-xs text-[var(--text-secondary)] uppercase mt-1">Avg Lead Value</div>
                                         </div>
-                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center">
+                                        <div className="p-4 rounded-xl bg-[var(--secondary-bg)]/30 border border-[var(--border-color)] text-center cursor-pointer" role="button" tabIndex={0} onClick={() => handleInsightClick('Conversion Rate', 'Opened conversion diagnostics.')} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') handleInsightClick('Conversion Rate', 'Opened conversion diagnostics.'); }}>
                                             <div className="text-2xl font-bold text-[var(--accent-green)]">34.2%</div>
                                             <div className="text-xs text-[var(--text-secondary)] uppercase mt-1">Conversion Rate</div>
                                         </div>
@@ -443,11 +560,19 @@ export default function Dashboard({ filters }) {
                                 </div>
                                 <div className="overflow-y-auto custom-scrollbar flex-1">
                                     {recentActivities.map((activity, idx) => (
-                                        <RecentActivityItem key={idx} {...activity} />
+                                        <RecentActivityItem
+                                          key={idx}
+                                          {...activity}
+                                          isActive={selectedActivity === idx}
+                                          onClick={() => {
+                                            setSelectedActivity(idx);
+                                            handleInsightClick('Activity Details', activity.title);
+                                          }}
+                                        />
                                     ))}
                                 </div>
                                 <div className="p-3 border-t border-[var(--border-color)] text-center">
-                                    <Button variant="ghost" size="sm" className="w-full text-[var(--accent-blue)]">View All Activity</Button>
+                                    <Button variant="ghost" size="sm" className="w-full text-[var(--accent-blue)]" onClick={() => handleInsightClick('Activity Feed', 'Full activity log opened.')}>View All Activity</Button>
                                 </div>
                             </PremiumCard>
                         </div>
@@ -529,17 +654,21 @@ export default function Dashboard({ filters }) {
                                     <table className="w-full text-left text-sm">
                                         <thead className="bg-[var(--secondary-bg)]/50 text-[var(--text-secondary)] font-medium">
                                             <tr>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">Program</th>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">Enrolled</th>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">In Progress</th>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">Completed</th>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">Dropped</th>
-                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]">Conv. Rate</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('program', setAnalyticsSort)}>Program{sortIconFor('program', analyticsSort)}</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('enrolled', setAnalyticsSort)}>Enrolled{sortIconFor('enrolled', analyticsSort)}</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('inProgress', setAnalyticsSort)}>In Progress{sortIconFor('inProgress', analyticsSort)}</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('completed', setAnalyticsSort)}>Completed{sortIconFor('completed', analyticsSort)}</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('dropped', setAnalyticsSort)}>Dropped{sortIconFor('dropped', analyticsSort)}</th>
+                                                <th className="p-4 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('rate', setAnalyticsSort)}>Conv. Rate{sortIconFor('rate', analyticsSort)}</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-[var(--border-color)]">
-                                            {analyticsTableData.map((row, idx) => (
-                                                <tr key={idx} className="hover:bg-[var(--secondary-bg)]/30 transition-colors">
+                                            {sortedAnalyticsTableData.map((row, idx) => (
+                                                <tr
+                                                  key={idx}
+                                                  className="hover:bg-[var(--secondary-bg)]/30 transition-colors cursor-pointer"
+                                                  onClick={() => handleInsightClick(row.program, `Opened analytics for ${row.program}.`)}
+                                                >
                                                     <td className="p-4 font-medium text-[var(--text-primary)]">{row.program}</td>
                                                     <td className="p-4 text-[var(--accent-green)]">{row.enrolled}</td>
                                                     <td className="p-4">{row.inProgress}</td>
@@ -736,17 +865,21 @@ export default function Dashboard({ filters }) {
                         <PremiumCard className="p-0 overflow-hidden">
                             <div className="p-6 border-b border-[var(--border-color)] flex justify-between items-center">
                                 <h3 className="text-lg font-bold">Recently Generated Reports</h3>
-                                <Button variant="ghost" size="sm" className="gap-2 text-[var(--text-secondary)]">
+                                <Button variant="ghost" size="sm" className="gap-2 text-[var(--text-secondary)]" onClick={() => handleInsightClick('Reports Refreshed', 'Latest reports pulled successfully.')}>
                                     <RefreshCw className="w-4 h-4" /> Refresh List
                                 </Button>
                             </div>
                             <div className="divide-y divide-[var(--border-color)]">
                                 {recentReports.map((report, idx) => (
-                                    <GeneratedReportRow key={idx} {...report} />
+                                    <GeneratedReportRow
+                                      key={idx}
+                                      {...report}
+                                      onClick={() => handleInsightClick(report.name, 'Opened generated report preview.')}
+                                    />
                                 ))}
                             </div>
                             <div className="p-4 bg-[var(--secondary-bg)]/30 text-center">
-                                <Button variant="link" className="text-[var(--accent-blue)]">View All Reports History</Button>
+                                <Button variant="link" className="text-[var(--accent-blue)]" onClick={() => handleInsightClick('Reports History', 'Opened full report archive.')}>View All Reports History</Button>
                             </div>
                         </PremiumCard>
                         
@@ -757,34 +890,26 @@ export default function Dashboard({ filters }) {
                                 <table className="w-full text-left text-sm">
                                     <thead className="bg-[var(--secondary-bg)]/50 text-[var(--text-secondary)]">
                                         <tr>
-                                            <th className="p-3">Report Name</th>
-                                            <th className="p-3">Frequency</th>
-                                            <th className="p-3">Next Run</th>
+                                            <th className="p-3 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('name', setScheduleSort)}>Report Name{sortIconFor('name', scheduleSort)}</th>
+                                            <th className="p-3 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('frequency', setScheduleSort)}>Frequency{sortIconFor('frequency', scheduleSort)}</th>
+                                            <th className="p-3 cursor-pointer hover:text-[var(--text-primary)]" onClick={() => toggleSort('nextRun', setScheduleSort)}>Next Run{sortIconFor('nextRun', scheduleSort)}</th>
                                             <th className="p-3">Status</th>
                                             <th className="p-3 text-right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-[var(--border-color)]">
-                                        <tr>
-                                            <td className="p-3 font-medium">Weekly Financial Summary</td>
-                                            <td className="p-3">Weekly (Mon)</td>
-                                            <td className="p-3">Jan 16, 2026</td>
-                                            <td className="p-3"><span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-xs border border-green-500/20">Active</span></td>
-                                            <td className="p-3 text-right flex justify-end gap-2">
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-[var(--text-secondary)]"><Edit2 className="w-3 h-3"/></Button>
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-500/10"><Trash2 className="w-3 h-3"/></Button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="p-3 font-medium">Monthly Enrollment Report</td>
-                                            <td className="p-3">Monthly (1st)</td>
-                                            <td className="p-3">Feb 01, 2026</td>
-                                            <td className="p-3"><span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-xs border border-green-500/20">Active</span></td>
-                                            <td className="p-3 text-right flex justify-end gap-2">
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-[var(--text-secondary)]"><Edit2 className="w-3 h-3"/></Button>
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-500/10"><Trash2 className="w-3 h-3"/></Button>
-                                            </td>
-                                        </tr>
+                                        {sortedScheduleRows.map((row) => (
+                                          <tr key={row.name} className="hover:bg-[var(--secondary-bg)]/30 transition-colors">
+                                              <td className="p-3 font-medium">{row.name}</td>
+                                              <td className="p-3">{row.frequency}</td>
+                                              <td className="p-3">{row.nextRun}</td>
+                                              <td className="p-3"><span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-xs border border-green-500/20">{row.status}</span></td>
+                                              <td className="p-3 text-right flex justify-end gap-2">
+                                                  <Button size="icon" variant="ghost" className="h-8 w-8 text-[var(--text-secondary)]" onClick={() => handleInsightClick('Schedule Updated', `${row.name} opened for edits.`)}><Edit2 className="w-3 h-3"/></Button>
+                                                  <Button size="icon" variant="ghost" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-500/10" onClick={() => handleInsightClick('Schedule Removed', `${row.name} removed.`)}><Trash2 className="w-3 h-3"/></Button>
+                                              </td>
+                                          </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
